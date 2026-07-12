@@ -17,7 +17,7 @@ const SCREENS = [
 export const useAppStore = create((set, get) => ({
   currentScreen: 'boot',
   screenHistory: ['boot'],
-  musicPlaying: false,
+  musicPlaying: true,
   darkMode: true,
   secretBuffer: '',
   activeSecrets: [],
