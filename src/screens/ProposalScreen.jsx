@@ -128,30 +128,6 @@ export default function ProposalScreen() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
           >
-            {/* Accept */}
-            <motion.button
-              className="btn-accept w-full"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => goTo('accept')}
-            >
-              <span className="flex items-center justify-center gap-2">
-                <span>Accept</span>
-                <motion.span
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 1.2, repeat: Infinity }}
-                >
-                  ❤️
-                </motion.span>
-              </span>
-              {/* Shimmer overlay */}
-              <div
-                className="absolute inset-0 rounded-2xl opacity-0 hover:opacity-30 transition-opacity"
-                style={{
-                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-                }}
-              />
-            </motion.button>
 
             {/* Reject — runs away */}
             <motion.div
