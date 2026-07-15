@@ -2,6 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Light Mode: Force readable text ───────────────────────────────────────
+   Placed OUTSIDE @layer so it wins the cascade over Tailwind utilities.
+   Uses broad element + class selectors to catch everything.
+   ─────────────────────────────────────────────────────────────────────────── */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] p,
+[data-theme="light"] label {
+  color: #1e1b4b !important;
+  transition: color 0.7s ease;
+}
+
+/* Catch Tailwind text-white and all opacity variants */
+[data-theme="light"] .text-white {
+  color: #1e1b4b !important;
+}
+[data-theme="light"] [class*="text-white"] {
+  color: #312e81 !important;
+}
+
+/* Restore gradient / colored text */
+[data-theme="light"] .text-gradient,
+[data-theme="light"] .text-gradient * {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+}
+[data-theme="light"] .shimmer-text {
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Explicitly colored spans (pink/sky/purple/green) — keep their colors */
+[data-theme="light"] [class*="text-pink"],
+[data-theme="light"] [class*="text-sky"],
+[data-theme="light"] [class*="text-purple"],
+[data-theme="light"] [class*="text-violet"],
+[data-theme="light"] [class*="text-green"],
+[data-theme="light"] [class*="text-red"],
+[data-theme="light"] [class*="text-yellow"],
+[data-theme="light"] [class*="text-blue"],
+[data-theme="light"] [class*="text-indigo"],
+[data-theme="light"] [class*="text-emerald"],
+[data-theme="light"] [class*="text-amber"],
+[data-theme="light"] [class*="text-rose"],
+[data-theme="light"] [class*="text-teal"] {
+  /* Keep the Tailwind color — remove the [class*="text-white"] override */
+  color: revert !important;
+}
+
+/* font-mono labels (like "CHAPTER ONE" etc) */
+[data-theme="light"] .font-mono {
+  color: #4c1d95 !important;
+}
+
+/* Buttons text — keep white */
+[data-theme="light"] button {
+  /* Let button-specific CSS handle color */
+}
+
+
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -104,6 +168,22 @@
   .btn-reject:hover {
     background: rgba(255, 255, 255, 0.12);
     transform: translateY(-2px);
+  }
+
+  /* Accept (green) — same size/radius/padding as btn-reject, green gradient theme */
+  .btn-accept-green {
+    @apply relative overflow-hidden px-8 py-4 rounded-2xl font-bold text-white text-lg transition-all duration-300;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 0 24px rgba(34, 197, 94, 0.45);
+  }
+
+  .btn-accept-green:hover {
+    box-shadow: 0 0 44px rgba(34, 197, 94, 0.75), 0 0 80px rgba(16, 185, 129, 0.3);
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .btn-accept-green:active {
+    transform: translateY(0) scale(0.98);
   }
 
   .text-gradient {
@@ -317,6 +397,7 @@
   to { opacity: 1; }
 }
 
+
 /* Particle effects */
 @keyframes particleFly {
   0% {
@@ -328,3 +409,125 @@
     opacity: 0;
   }
 }
+
+/* ─── Light Mode Overrides ───────────────────────────────────────────────────
+   Applied via [data-theme="light"] on the root div.
+   Transitions smoothly over 800ms — no layout changes, only visual overrides.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+[data-theme="light"] {
+  transition: background 0.8s ease, color 0.8s ease;
+}
+
+/* Main wrapper background */
+[data-theme="light"] .loveos-root {
+  background: linear-gradient(160deg, #fef3c7 0%, #fce7f3 35%, #ede9fe 65%, #dbeafe 100%) !important;
+  transition: background 0.8s ease;
+}
+
+/* Cards become frosted white glass */
+[data-theme="light"] .glass-card {
+  background: rgba(255, 255, 255, 0.72) !important;
+  border: 1px solid rgba(236, 72, 153, 0.2) !important;
+  box-shadow: 0 8px 40px rgba(236, 72, 153, 0.12), 0 2px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  transition: background 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease;
+}
+
+[data-theme="light"] .glass,
+[data-theme="light"] .glass-strong {
+  background: rgba(255, 255, 255, 0.65) !important;
+  border-color: rgba(236, 72, 153, 0.18) !important;
+  transition: background 0.8s ease;
+}
+
+/* Text colors */
+[data-theme="light"] .text-white {
+  color: #1e1b4b !important;
+  transition: color 0.8s ease;
+}
+
+[data-theme="light"] .text-white\/80,
+[data-theme="light"] .text-white\/75,
+[data-theme="light"] .text-white\/70 {
+  color: #3b2f60 !important;
+  transition: color 0.8s ease;
+}
+
+[data-theme="light"] .text-white\/55,
+[data-theme="light"] .text-white\/50,
+[data-theme="light"] .text-white\/45,
+[data-theme="light"] .text-white\/40 {
+  color: #7c6f9f !important;
+  transition: color 0.8s ease;
+}
+
+[data-theme="light"] .text-white\/35,
+[data-theme="light"] .text-white\/30,
+[data-theme="light"] .text-white\/25 {
+  color: #a899cc !important;
+  transition: color 0.8s ease;
+}
+
+/* Buttons — pink-peach gradient in light mode */
+[data-theme="light"] .btn-accept {
+  background: linear-gradient(135deg, #ec4899, #fb923c) !important;
+  box-shadow: 0 0 24px rgba(236, 72, 153, 0.45) !important;
+  transition: background 0.8s ease, box-shadow 0.8s ease;
+}
+
+[data-theme="light"] .btn-accept:hover {
+  box-shadow: 0 0 48px rgba(236, 72, 153, 0.7), 0 0 80px rgba(251, 146, 60, 0.35) !important;
+  transform: translateY(-3px) scale(1.04) !important;
+}
+
+[data-theme="light"] .btn-reject {
+  background: rgba(236, 72, 153, 0.08) !important;
+  border-color: rgba(236, 72, 153, 0.25) !important;
+  color: #be185d !important;
+  transition: background 0.8s ease, border-color 0.8s ease;
+}
+
+[data-theme="light"] .btn-reject:hover {
+  background: rgba(236, 72, 153, 0.15) !important;
+}
+
+[data-theme="light"] .btn-accept-green {
+  background: linear-gradient(135deg, #10b981, #34d399) !important;
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Scrollbar in light mode */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: rgba(236, 72, 153, 0.06);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(236, 72, 153, 0.35);
+}
+
+/* Hide cursor: none in light mode for better UX */
+[data-theme="light"] body {
+  background: linear-gradient(160deg, #fef3c7 0%, #fce7f3 40%, #ede9fe 100%);
+}
+
+/* Shine hover effect on buttons in light mode */
+[data-theme="light"] .btn-accept::after,
+[data-theme="light"] .btn-accept-green::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+[data-theme="light"] .btn-accept:hover::after,
+[data-theme="light"] .btn-accept-green:hover::after {
+  transform: translateX(100%);
+}
+
+/* Scrollbar hide utility */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

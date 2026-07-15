@@ -5,6 +5,8 @@ import ThreeBackground from './components/ThreeBackground';
 import Cursor from './components/Cursor';
 import MusicToggle from './components/MusicToggle';
 import SecretListener from './components/SecretListener';
+import ThemeToggle from './components/ThemeToggle';
+import LightModeOverlay, { LightModeClickEffects } from './components/LightModeOverlay';
 
 import BootScreen from './screens/BootScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -20,6 +22,7 @@ import RejectScreen from './screens/RejectScreen';
 import JourneyScreen from './screens/JourneyScreen';
 
 import { useAppStore } from './store/useAppStore';
+import { useThemeStore } from './store/useThemeStore';
 
 const SCREEN_MAP = {
   boot: BootScreen,
@@ -111,14 +114,23 @@ function ScreenIndicator({ current }) {
 
 export default function App() {
   const { currentScreen } = useAppStore();
+  const { theme } = useThemeStore();
   const [isMobile] = useState(() => window.innerWidth < 768);
 
   const CurrentScreen = SCREEN_MAP[currentScreen];
 
   return (
-    <div className="relative min-h-screen bg-black overflow-hidden">
+    <div
+      className="relative min-h-screen bg-black overflow-hidden loveos-root"
+      data-theme={theme}
+      style={{ transition: 'background 0.8s ease' }}
+    >
       {/* Three.js background */}
       <ThreeBackground />
+
+      {/* Light mode romantic overlay — floats above Three.js bg */}
+      <LightModeOverlay />
+      <LightModeClickEffects />
 
       {/* Custom cursor (desktop only) */}
       {!isMobile && <Cursor />}
@@ -131,6 +143,9 @@ export default function App() {
 
       {/* Music toggle */}
       <MusicToggle />
+
+      {/* Theme toggle — bottom left */}
+      <ThemeToggle />
 
       {/* Secret keyboard listener */}
       <SecretListener />

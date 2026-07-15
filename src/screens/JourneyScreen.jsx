@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import JourneyHub from '../journey/JourneyHub';
 
 const PROMISES = [
   { emoji: '☕', text: 'Kabhi kabhi chai pe milenge — plan kare ya unplanned.', delay: 0.2 },
@@ -21,6 +22,8 @@ export default function JourneyScreen() {
   const [phase, setPhase] = useState('intro'); // intro | promises | final
   const [finalLineIdx, setFinalLineIdx] = useState(0);
   const [showRestart, setShowRestart] = useState(false);
+  // ── NEW: Journey Hub toggle ─────────────────────────────────────────────
+  const [showHub, setShowHub] = useState(false);
 
   useEffect(() => {
     // Big confetti burst on mount
@@ -41,6 +44,9 @@ export default function JourneyScreen() {
     });
     setTimeout(() => setShowRestart(true), 600 + FINAL_WORDS.length * 700 + 400);
   }, [phase]);
+
+  // ── Render Journey Hub when activated ──────────────────────────────────
+  if (showHub) return <JourneyHub onBack={() => setShowHub(false)} />;
 
   return (
     <motion.div
@@ -271,7 +277,35 @@ export default function JourneyScreen() {
                 </motion.div>
               )}
 
-              {/* Replay confetti button */}
+              {/* ── NEW: Start Journey button ─────────────────────── */}
+              {showRestart && (
+                <motion.button
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="w-full py-4 rounded-2xl font-bold text-white text-base mb-3 relative overflow-hidden"
+                  style={{
+                    background: 'linear-gradient(135deg, #ec4899, #8b5cf6, #38bdf8)',
+                    boxShadow: '0 0 40px rgba(236,72,153,0.5), 0 0 80px rgba(139,92,246,0.25)',
+                  }}
+                  whileHover={{ scale: 1.03, boxShadow: '0 0 60px rgba(236,72,153,0.7)' }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => {
+                    confetti({ particleCount: 80, spread: 120, origin: { y: 0.7 }, colors: ['#f9a8d4', '#a78bfa', '#38bdf8'] });
+                    setTimeout(() => setShowHub(true), 400);
+                  }}
+                >
+                  {/* shimmer */}
+                  <motion.div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)' }}
+                    animate={{ x: ['-100%', '100%'] }} transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }} />
+                  <span className="relative flex items-center justify-center gap-2">
+                    <span>✨ Start Our Journey</span>
+                    <motion.span animate={{ x: [0, 6, 0] }} transition={{ duration: 0.9, repeat: Infinity }}>→</motion.span>
+                  </span>
+                </motion.button>
+              )}
+
+              {/* Replay confetti button (original, untouched) */}
               {showRestart && (
                 <motion.button
                   initial={{ opacity: 0, y: 20 }}
